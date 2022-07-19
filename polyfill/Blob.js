@@ -251,7 +251,6 @@ export default class Blob extends EventTarget {
       pass = true
     })
     .catch((err) => {
-      console.warn('Blob.slice failed:', err)
       pass = true
     })
     log.debug('slice returning new Blob')
@@ -281,7 +280,6 @@ export default class Blob extends EventTarget {
       return Promise.reject('Blob has been released.')
     this._closed = true
     return fs.unlink(this._ref).catch((err) => {
-      console.warn(err)
     })
   }
 
@@ -291,8 +289,7 @@ export default class Blob extends EventTarget {
     this._closed = true
     if(!this._isReference) {
       return fs.unlink(this._ref).catch((err) => {
-        console.warn(err)
-      })   
+      })
     }
     else {
       return Promise.resolve()

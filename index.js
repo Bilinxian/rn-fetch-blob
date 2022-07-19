@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import  {RNFetchBlobConfig, RNFetchBlobStream, RNFetchBlobResponseInfo} from './types'
 import URIUtil from './utils/uri'
-import {RNFetchBlobSession, readStream, unlink, session, writeStream, readFile, ls, isDir, mv, cp} from './fs'
+import fs from './fs'
 import getUUID from './utils/uuid'
 import base64 from 'base-64'
 import polyfill from './polyfill'
@@ -22,7 +22,21 @@ import JSONStream from './json-stream'
 const Blob = polyfill.Blob
 const emitter = DeviceEventEmitter
 const RNFetchBlob = NativeModules.RNFetchBlob
-
+const {
+  RNFetchBlobSession,
+  readStream,
+  createFile,
+  unlink,
+  exists,
+  mkdir,
+  session,
+  writeStream,
+  readFile,
+  ls,
+  isDir,
+  mv,
+  cp
+} = fs
 // when app resumes, check if there's any expired network task and trigger
 // their .expire event
 if(Platform.OS === 'ios') {
@@ -36,23 +50,19 @@ if(Platform.OS === 'ios') {
 emitter.addListener("RNFetchBlobMessage", (e) => {
 
   if(e.event === 'warn') {
-    console.warn(e.detail)
+
   }
   else if (e.event === 'error') {
     throw e.detail
   }
   else {
-    console.log("RNFetchBlob native message", e.detail)
+
   }
 })
 
 // Show warning if native module not detected
 if(!RNFetchBlob || !RNFetchBlob.fetchBlobForm || !RNFetchBlob.fetchBlob) {
-  console.warn(
-    'rn-fetch-blob could not find valid native module.',
-    'please make sure you have linked native modules using `rnpm link`,',
-    'and restart RN packager or manually compile IOS/Android project.'
-  )
+
 }
 
 function wrap(path:string):string {
@@ -505,7 +515,7 @@ class FetchBlobResponse {
       if(this.type === 'path')
         return session(name).add(this.data)
       else {
-        console.warn('only file paths can be add into session.')
+
         return null
       }
     }
@@ -519,7 +529,7 @@ class FetchBlobResponse {
         return readStream(this.data, encoding)
       }
       else {
-        console.warn('RNFetchblob', 'this response data does not contains any available stream')
+
         return null
       }
     }
@@ -534,7 +544,6 @@ class FetchBlobResponse {
         return readFile(this.data, encoding)
       }
       else {
-        console.warn('RNFetchblob', 'this response does not contains a readable file')
         return null
       }
     }
