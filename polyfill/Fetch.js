@@ -1,14 +1,7 @@
 import {NativeModules} from 'react-native';
-import Log from '../utils/log.js'
-import fs from '../fs'
-import unicode from '../utils/unicode'
 import Blob from './Blob'
 
 const RNFetchBlob = NativeModules.RNFetchBlob
-const log = new Log('FetchPolyfill')
-
-log.disable()
-// log.level(3)
 
 export default class Fetch {
 

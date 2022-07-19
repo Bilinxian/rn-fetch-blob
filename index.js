@@ -5,19 +5,12 @@
 import {
   NativeModules,
   DeviceEventEmitter,
-  NativeAppEventEmitter,
   Platform,
   AppState,
 } from 'react-native'
-import type {
-  RNFetchBlobNative,
-  RNFetchBlobConfig,
-  RNFetchBlobStream,
-  RNFetchBlobResponseInfo
-} from './types'
+import  {RNFetchBlobConfig, RNFetchBlobStream, RNFetchBlobResponseInfo} from './types'
 import URIUtil from './utils/uri'
-//import StatefulPromise from './class/StatefulPromise.js'
-import fs from './fs'
+import {RNFetchBlobSession, readStream, unlink, session, writeStream, readFile, ls, isDir, mv, cp} from './fs'
 import getUUID from './utils/uuid'
 import base64 from 'base-64'
 import polyfill from './polyfill'
@@ -25,21 +18,6 @@ import reduce from 'lodash/reduce'
 import android from './android'
 import ios from './ios'
 import JSONStream from './json-stream'
-const {
-  RNFetchBlobSession,
-  readStream,
-  createFile,
-  unlink,
-  exists,
-  mkdir,
-  session,
-  writeStream,
-  readFile,
-  ls,
-  isDir,
-  mv,
-  cp
-} = fs
 
 const Blob = polyfill.Blob
 const emitter = DeviceEventEmitter
